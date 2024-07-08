@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MedicationRepository extends JpaRepository<Medication,Integer> {
 
     Medication findByUser(User user);
+
+    //Medication findByUserId(int userId);
 }

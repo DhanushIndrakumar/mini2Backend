@@ -7,10 +7,13 @@ import mini2Backend.demo.entities.Medication;
 import mini2Backend.demo.entities.User;
 import mini2Backend.demo.repositories.MedicationRepository;
 import mini2Backend.demo.repositories.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,13 +51,21 @@ public class MedicationService {
         return medication.getMPrescription();
     }
 
-    //retrieving a single medicine based on userid
-    public Medication getMedicineByUserId(int userId){
-        User user=userRepository.findByUserId(userId).get();
-        Medication medication=medicationRepository.findByUser(user);
-        return medication;
+    public ResponseEntity<?> getMedicineByUserId(int userId) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println(user.getUserId());
+            System.out.println(user.getMedication());
+            Medication medication = medicationRepository.findByUser(user);
+            if (medication == null) {
+                return ResponseEntity.ok("Medication not yet prescribed");
+            }
+            return ResponseEntity.ok(medication);
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
     }
-
 
 
 

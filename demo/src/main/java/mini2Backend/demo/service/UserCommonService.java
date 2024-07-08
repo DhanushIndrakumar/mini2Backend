@@ -72,8 +72,14 @@ public class UserCommonService {
 
     public List<RegisterResponse> getAllUsers() {
         List<User> users= userRepository.findAll();
+        List<User> newUsers=new ArrayList<>();
+        for(User u:users){
+            if(u.getRole().equals(Role.USER)){
+                newUsers.add(u);
+            }
+        }
         List<RegisterResponse> registerResponses=new ArrayList<>();
-        for(User user:users){
+        for(User user:newUsers){
             RegisterResponse registerResponse=new RegisterResponse();
             registerResponse.setUserId(user.getUserId());
             registerResponse.setUserName(user.getUserName());

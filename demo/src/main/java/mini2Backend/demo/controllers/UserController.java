@@ -2,6 +2,7 @@ package mini2Backend.demo.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import mini2Backend.demo.DTO.AppointmentResponse;
 import mini2Backend.demo.DTO.RegisterRequest;
 import mini2Backend.demo.DTO.RegisterResponse;
 import mini2Backend.demo.entities.Appointment;
@@ -9,6 +10,7 @@ import mini2Backend.demo.entities.Medication;
 import mini2Backend.demo.service.AppointmentService;
 import mini2Backend.demo.service.MedicationService;
 import mini2Backend.demo.service.UserCommonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,7 +65,7 @@ public class UserController {
             summary = "Information needed for appointment along with userId through the path need to be given"
     )
     @PostMapping("bookAppointment/{userId}")
-    public Appointment bookAppointment(@RequestBody Appointment appointment, @PathVariable int userId){
+    public AppointmentResponse bookAppointment(@RequestBody Appointment appointment, @PathVariable int userId){
         return appointmentService.bookAppointment(appointment,userId);
     }
 
@@ -73,7 +75,7 @@ public class UserController {
             summary = "Displays the details of a single appointment made by the user"
     )
     @GetMapping("getAppointment/{appointmentId}")
-    public Appointment getAppointmentById(@PathVariable int appointmentId){
+    public AppointmentResponse getAppointmentById(@PathVariable int appointmentId){
         return appointmentService.getAppointmentById(appointmentId);
     }
 
@@ -83,8 +85,8 @@ public class UserController {
             summary = "Displays the details of the medication"
     )
     @GetMapping("getMedication/{userId}")
-    public Medication getMedicationById(@PathVariable int userId){
-        return  medicationService.getMedicineByUserId(userId);
+    public ResponseEntity<?> getMedicineByUserId(@PathVariable int userId) {
+        return medicationService.getMedicineByUserId(userId);
     }
 
 
