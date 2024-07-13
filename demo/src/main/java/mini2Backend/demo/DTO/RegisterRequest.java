@@ -1,5 +1,7 @@
 package mini2Backend.demo.DTO;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +10,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+    @NotBlank(message = "User name is mandatory")
     private String userName;
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is mandatory")
     private String email;
+
+    @NotBlank(message = "password is mandatory")
     private String password;
+
+    @NotBlank(message = "phone is mandatory")
     private String phone;
+
+    @NotBlank(message = "medical history is mandatory")
     private String medicalHistory;
 
 }

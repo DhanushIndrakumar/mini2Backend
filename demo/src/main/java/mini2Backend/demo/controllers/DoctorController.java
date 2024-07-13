@@ -2,10 +2,7 @@ package mini2Backend.demo.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import mini2Backend.demo.DTO.AppointmentResponse;
-import mini2Backend.demo.DTO.DoctorAppointmentResponse;
-import mini2Backend.demo.DTO.MedicationRequest;
-import mini2Backend.demo.DTO.RegisterResponse;
+import mini2Backend.demo.DTO.*;
 import mini2Backend.demo.entities.Appointment;
 import mini2Backend.demo.entities.Medication;
 import mini2Backend.demo.service.AppointmentService;
@@ -45,7 +42,6 @@ public class DoctorController {
     )
     @GetMapping("/getAppointments")
     public List<DoctorAppointmentResponse> getAppointments(){
-
         return appointmentService.getAllAppointments();
     }
 
@@ -65,7 +61,7 @@ public class DoctorController {
             summary = "Allows the doctor to prescribe medicine to the patient"
     )
     @PostMapping("/prescribeMedicine/{userId}")
-    public Medication prescribeMedicine(@RequestBody MedicationRequest medicationRequest,@PathVariable int userId){
+    public MedicationResponse prescribeMedicine(@RequestBody MedicationRequest medicationRequest, @PathVariable int userId){
         return medicationService.prescribeMedicine(medicationRequest,userId);
     }
 

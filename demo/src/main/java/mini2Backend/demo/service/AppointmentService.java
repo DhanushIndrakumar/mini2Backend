@@ -36,8 +36,8 @@ public class AppointmentService {
         return appointmentResponse;
     }
 
-    public void cancelAppointment(int aid){
-        appointmentRepository.deleteById(aid);
+    public void cancelAppointment(int appointmentId){
+        appointmentRepository.deleteByAppointmentId(appointmentId);
     }
 
     public List<DoctorAppointmentResponse> getAllAppointments(){

@@ -42,8 +42,8 @@ public class AuthController {
             summary="If the user is registered and tries to login with Valid Username and password, token and refreshToken is generated"
     )
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest){
-        return userCommonService.login(loginRequest);
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(userCommonService.login(loginRequest));
     }
 
 

@@ -3,6 +3,7 @@ package mini2Backend.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import mini2Backend.demo.DTO.MedicationRequest;
+import mini2Backend.demo.DTO.MedicationResponse;
 import mini2Backend.demo.entities.Medication;
 import mini2Backend.demo.entities.User;
 import mini2Backend.demo.repositories.MedicationRepository;
@@ -23,12 +24,16 @@ public class MedicationService {
 
     private final UserRepository userRepository;
 
-    public Medication prescribeMedicine(MedicationRequest medicationRequest,int userId){
-        User user=userRepository.findByUserId(userId).orElseThrow();
+    public MedicationResponse prescribeMedicine(MedicationRequest medicationRequest, int userId){
         Medication medication=new Medication();
         medication.setMPrescription(medicationRequest.getMPrescription());
+        User user=userRepository.findByUserId(userId).orElseThrow();
         medication.setUser(user);
-        return medication;
+        Medication medication1=medicationRepository.save(medication);
+        MedicationResponse medicationResponse=new MedicationResponse();
+        medicationResponse.setMId(medication1.getMId());
+        medicationResponse.setMPrescription(medication1.getMPrescription());
+        return medicationResponse;
     }
 
     //remove medicine from medicine list
