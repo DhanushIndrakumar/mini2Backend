@@ -33,7 +33,7 @@ public class JWTServiceImpl implements JWTService {
         return Jwts.parserBuilder() //component for extracting its components
                 .setSigningKey(getSigninKey())//checking whether it is the same user using signingkey
                 .build()
-                .parseClaimsJws(token)//sepearting into its constituents
+                .parseClaimsJws(token)//seperating into its constituents
                 .getBody();
     }
 

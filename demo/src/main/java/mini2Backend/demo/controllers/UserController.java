@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class UserController {
 
     private final UserCommonService userCommonService;
@@ -64,9 +64,15 @@ public class UserController {
             description="End point to book an appointment ",
             summary = "Information needed for appointment along with userId through the path need to be given"
     )
+
     @PostMapping("bookAppointment/{userId}")
     public AppointmentResponse bookAppointment(@RequestBody Appointment appointment, @PathVariable int userId){
         return appointmentService.bookAppointment(appointment,userId);
+    }
+
+    @DeleteMapping("cancelAppointment/{userId}")
+    public String cancelAppointmentByUser(@PathVariable int userId){
+        return appointmentService.cancelAppointmentByUser(userId);
     }
 
 

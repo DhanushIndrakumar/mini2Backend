@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mini2Backend.demo.DTO.LoginRequest;
-import mini2Backend.demo.DTO.LoginResponse;
-import mini2Backend.demo.DTO.RegisterRequest;
-import mini2Backend.demo.DTO.RegisterResponse;
+import mini2Backend.demo.DTO.*;
+import mini2Backend.demo.entities.User;
+import mini2Backend.demo.repositories.UserRepository;
+import mini2Backend.demo.service.JWTService;
 import mini2Backend.demo.service.UserCommonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     private final UserCommonService userCommonService;
+
+    private final JWTService jwtService;
+
+    private final UserRepository userRepository;
 
     @Operation(
             description = "End point to register a user",
@@ -45,6 +49,22 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(userCommonService.login(loginRequest));
     }
-
-
+    @PostMapping("/getDetailsByToken")
+    public RegisterResponse getDetails(@RequestBody DetailsToken detailsToken) {
+        String token = detailsToken.getToken();
+        String userEmail = jwtService.extractUserName(token);
+        System.out.println(userEmail);
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("user:" + user.getUserId());
+        RegisterResponse registerResponse = new RegisterResponse();
+        registerResponse.setUserId(user.getUserId());
+        registerResponse.setUserName(user.getUserName());
+        registerResponse.setEmail(user.getEmail());
+        registerResponse.setPhone(user.getPhone());
+        registerResponse.setMedicalHistory(user.getMedicalHistory());
+        registerResponse.setRole(user.getRole());
+        return registerResponse;
+    }
 }
+
+

@@ -40,6 +40,21 @@ public class AppointmentService {
         appointmentRepository.deleteByAppointmentId(appointmentId);
     }
 
+
+    public String cancelAppointmentByUser(int userId) {
+        // Check if the user has an appointment
+        boolean appointmentExists = appointmentRepository.existsByUserId(userId);
+
+        if (!appointmentExists) {
+            // No appointment found for the user
+            return "User has not yet booked an appointment";
+        }
+
+        // Proceed with deletion
+        appointmentRepository.deleteAppointmentByUserId(userId);
+        return "Appointment Successfully Cancelled";
+    }
+
     public List<DoctorAppointmentResponse> getAllAppointments(){
         List<Appointment> appointmentList=appointmentRepository.findAll();
         List<DoctorAppointmentResponse> responseList=new ArrayList<>();
@@ -48,6 +63,8 @@ public class AppointmentService {
             doctorAppointmentResponse.setAid(appointment.getAid());
             doctorAppointmentResponse.setAdate(appointment.getAdate());
             doctorAppointmentResponse.setUserId(appointment.getUser().getUserId());
+            User user=userRepository.findByUserId(appointment.getUser().getUserId()).get();
+            doctorAppointmentResponse.setUserName(user.getUserName());
             responseList.add(doctorAppointmentResponse);
         }
         return responseList;
@@ -61,5 +78,6 @@ public class AppointmentService {
         appointmentResponse.setAdate(appointment.getAdate());
         return appointmentResponse;
     }
+
 
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class MedicationResponse {
-    private int mId;
+    private int mid;
 
-    private List<String> mPrescription;
+    private List<String> mprescription;
 }

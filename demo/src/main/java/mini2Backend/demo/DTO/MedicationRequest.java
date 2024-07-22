@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class MedicationRequest {
 
-    private List<String> mPrescription;
+    private List<String> mprescription;
 }

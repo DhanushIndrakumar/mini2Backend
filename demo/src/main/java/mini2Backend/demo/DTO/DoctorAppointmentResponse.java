@@ -15,4 +15,6 @@ public class DoctorAppointmentResponse {
 
     private int userId;
 
+    private String userName;
+
 }

@@ -26,20 +26,20 @@ public class MedicationService {
 
     public MedicationResponse prescribeMedicine(MedicationRequest medicationRequest, int userId){
         Medication medication=new Medication();
-        medication.setMPrescription(medicationRequest.getMPrescription());
+        medication.setMprescription(medicationRequest.getMprescription());
         User user=userRepository.findByUserId(userId).orElseThrow();
         medication.setUser(user);
         Medication medication1=medicationRepository.save(medication);
         MedicationResponse medicationResponse=new MedicationResponse();
-        medicationResponse.setMId(medication1.getMId());
-        medicationResponse.setMPrescription(medication1.getMPrescription());
+        medicationResponse.setMid(medication1.getMid());
+        medicationResponse.setMprescription(medication1.getMprescription());
         return medicationResponse;
     }
 
     //remove medicine from medicine list
     public List<String> removeMedicineFromList(String medicine,int mid){
         Medication medication=medicationRepository.findById(mid).orElseThrow();
-        List<String> oldMedicineList=medication.getMPrescription();
+        List<String> oldMedicineList=medication.getMprescription();
         //List<String> newMedicineList=new ArrayList<>();
         for(String m:oldMedicineList){
             if(medicine.equals(m)){
@@ -52,8 +52,8 @@ public class MedicationService {
     //updating medicine List
     public List<String> updateMedicineList(MedicationRequest medicationRequest,int mid){
         Medication medication=medicationRepository.findById(mid).orElseThrow();
-        medication.setMPrescription(medicationRequest.getMPrescription());
-        return medication.getMPrescription();
+        medication.setMprescription(medicationRequest.getMprescription());
+        return medication.getMprescription();
     }
 
     public ResponseEntity<?> getMedicineByUserId(int userId) {
@@ -61,7 +61,7 @@ public class MedicationService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             System.out.println(user.getUserId());
-            System.out.println(user.getMedication());
+           // System.out.println(user.getMedication());
             Medication medication = medicationRepository.findByUser(user);
             if (medication == null) {
                 return ResponseEntity.ok("Medication not yet prescribed");

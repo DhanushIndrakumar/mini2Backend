@@ -1,7 +1,10 @@
 package mini2Backend.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import mini2Backend.demo.DTO.StringListConverter;
 
 import java.util.List;
 
@@ -15,10 +18,12 @@ import java.util.List;
 public class Medication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mId;
+    private int mid;
 
-    private List<String> mPrescription;
+    @Convert(converter = StringListConverter.class)
+    private List<String> mprescription;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="patient_id")
     private User user;

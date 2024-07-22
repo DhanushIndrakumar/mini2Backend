@@ -12,4 +12,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Integer
     @Transactional
     @Query("DELETE FROM Appointment a WHERE a.aid = :appointmentId")
     void deleteByAppointmentId(int appointmentId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Appointment a WHERE a.user.id = :userId")
+    void deleteAppointmentByUserId(int userId);
+
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Appointment a WHERE a.user.id = :userId")
+    boolean existsByUserId(int userId);
 }

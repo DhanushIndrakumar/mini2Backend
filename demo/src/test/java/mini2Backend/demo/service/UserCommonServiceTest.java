@@ -157,9 +157,7 @@ class UserCommonServiceTest {
 
   @Test
   void testGetUser() {
-
-
-    // Arrange
+  // Arrange
     User user = mock(User.class);
     when(user.getUserId()).thenReturn(1);
     when(user.getEmail()).thenReturn("jane.doe@example.org");

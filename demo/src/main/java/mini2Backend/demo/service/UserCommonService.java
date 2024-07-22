@@ -124,7 +124,6 @@ public class UserCommonService {
         registerResponse.setMedicalHistory(user1.getMedicalHistory());
 
         return registerResponse;
-
-
     }
+
 }

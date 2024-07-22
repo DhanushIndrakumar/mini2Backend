@@ -1,5 +1,7 @@
 package mini2Backend.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -43,10 +45,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)//Just used to create a foreign key relationship
     private Appointment appointment;
 
-
+    @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)//Just used to create a foreign key relationship
     private Medication medication;
 

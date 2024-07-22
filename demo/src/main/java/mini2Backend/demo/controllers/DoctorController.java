@@ -42,6 +42,7 @@ public class DoctorController {
     )
     @GetMapping("/getAppointments")
     public List<DoctorAppointmentResponse> getAppointments(){
+
         return appointmentService.getAllAppointments();
     }
 
