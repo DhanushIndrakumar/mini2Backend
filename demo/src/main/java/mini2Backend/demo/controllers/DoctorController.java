@@ -79,9 +79,9 @@ public class DoctorController {
             description="End point to edit the medicine list ",
             summary = "Allows the doctor to modify the medicine list based on patient condition"
     )
-    @GetMapping("/editMedicineList/{mId}")
-    public List<String>editMedicineList(@RequestBody MedicationRequest medicationRequest,@PathVariable int mId){
-        return medicationService.updateMedicineList(medicationRequest,mId);
+    @PostMapping("/editMedicineList/{userId}")
+    public List<String>editMedicineList(@RequestBody MedicationRequest medicationRequest,@PathVariable int userId){
+        return medicationService.updateMedicineList1(medicationRequest,userId);
     }
 
 

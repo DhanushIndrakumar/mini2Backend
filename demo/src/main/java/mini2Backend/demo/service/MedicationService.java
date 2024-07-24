@@ -56,6 +56,16 @@ public class MedicationService {
         return medication.getMprescription();
     }
 
+    public List<String> updateMedicineList1(MedicationRequest medicationRequest,int userId){
+        Medication medication=medicationRepository.findByUserId(userId).orElseThrow();
+        System.out.println(medication.getMid());
+        medication.setMprescription(medicationRequest.getMprescription());
+        medicationRepository.save(medication);
+        return medication.getMprescription();
+    }
+
+
+
     public ResponseEntity<?> getMedicineByUserId(int userId) {
         Optional<User> userOptional = userRepository.findByUserId(userId);
         if (userOptional.isPresent()) {
