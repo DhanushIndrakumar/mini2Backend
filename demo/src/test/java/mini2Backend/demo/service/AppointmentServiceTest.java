@@ -47,7 +47,10 @@ class AppointmentServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-
+    /**
+     * Method under test:
+     * {@link AppointmentService#bookAppointment(Appointment, int)}
+     */
     @Test
     void testBookAppointment() {
         // Arrange
@@ -57,8 +60,8 @@ class AppointmentServiceTest {
         appointment.setUser(new User());
 
         Medication medication = new Medication();
-        medication.setMId(1);
-        medication.setMPrescription(new ArrayList<>());
+        medication.setMid(1);
+        medication.setMprescription(new ArrayList<>());
         medication.setUser(new User());
 
         User user = new User();
@@ -83,8 +86,8 @@ class AppointmentServiceTest {
         appointment3.setUser(new User());
 
         Medication medication2 = new Medication();
-        medication2.setMId(1);
-        medication2.setMPrescription(new ArrayList<>());
+        medication2.setMid(1);
+        medication2.setMprescription(new ArrayList<>());
         medication2.setUser(new User());
 
         User user2 = new User();
@@ -99,8 +102,8 @@ class AppointmentServiceTest {
         user2.setUserName("janedoe");
 
         Medication medication3 = new Medication();
-        medication3.setMId(1);
-        medication3.setMPrescription(new ArrayList<>());
+        medication3.setMid(1);
+        medication3.setMprescription(new ArrayList<>());
         medication3.setUser(user2);
 
         User user3 = new User();
@@ -127,8 +130,8 @@ class AppointmentServiceTest {
         appointment5.setUser(new User());
 
         Medication medication4 = new Medication();
-        medication4.setMId(1);
-        medication4.setMPrescription(new ArrayList<>());
+        medication4.setMid(1);
+        medication4.setMprescription(new ArrayList<>());
         medication4.setUser(new User());
 
         User user4 = new User();
@@ -153,8 +156,8 @@ class AppointmentServiceTest {
         appointment7.setUser(new User());
 
         Medication medication5 = new Medication();
-        medication5.setMId(1);
-        medication5.setMPrescription(new ArrayList<>());
+        medication5.setMid(1);
+        medication5.setMprescription(new ArrayList<>());
         medication5.setUser(new User());
 
         User user5 = new User();
@@ -169,8 +172,8 @@ class AppointmentServiceTest {
         user5.setUserName("janedoe");
 
         Medication medication6 = new Medication();
-        medication6.setMId(1);
-        medication6.setMPrescription(new ArrayList<>());
+        medication6.setMid(1);
+        medication6.setMprescription(new ArrayList<>());
         medication6.setUser(user5);
 
         User user6 = new User();
@@ -214,8 +217,8 @@ class AppointmentServiceTest {
         user8.setUserName("janedoe");
 
         Medication medication7 = new Medication();
-        medication7.setMId(1);
-        medication7.setMPrescription(new ArrayList<>());
+        medication7.setMid(1);
+        medication7.setMprescription(new ArrayList<>());
         medication7.setUser(user8);
 
         User user9 = new User();
@@ -244,7 +247,9 @@ class AppointmentServiceTest {
         assertSame(adate, actualBookAppointmentResult.getAdate());
     }
 
-
+    /**
+     * Method under test: {@link AppointmentService#cancelAppointment(int)}
+     */
     @Test
     void testCancelAppointment() {
         // Arrange
@@ -257,7 +262,43 @@ class AppointmentServiceTest {
         verify(appointmentRepository).deleteByAppointmentId(eq(1));
     }
 
+    /**
+     * Method under test: {@link AppointmentService#cancelAppointmentByUser(int)}
+     */
+    @Test
+    void testCancelAppointmentByUser() {
+        // Arrange
+        doNothing().when(appointmentRepository).deleteAppointmentByUserId(anyInt());
+        when(appointmentRepository.existsByUserId(anyInt())).thenReturn(true);
 
+        // Act
+        String actualCancelAppointmentByUserResult = appointmentService.cancelAppointmentByUser(1);
+
+        // Assert
+        verify(appointmentRepository).deleteAppointmentByUserId(eq(1));
+        verify(appointmentRepository).existsByUserId(eq(1));
+        assertEquals("Appointment Successfully Cancelled", actualCancelAppointmentByUserResult);
+    }
+
+    /**
+     * Method under test: {@link AppointmentService#cancelAppointmentByUser(int)}
+     */
+    @Test
+    void testCancelAppointmentByUser2() {
+        // Arrange
+        when(appointmentRepository.existsByUserId(anyInt())).thenReturn(false);
+
+        // Act
+        String actualCancelAppointmentByUserResult = appointmentService.cancelAppointmentByUser(1);
+
+        // Assert
+        verify(appointmentRepository).existsByUserId(eq(1));
+        assertEquals("User has not yet booked an appointment", actualCancelAppointmentByUserResult);
+    }
+
+    /**
+     * Method under test: {@link AppointmentService#getAllAppointments()}
+     */
     @Test
     void testGetAllAppointments() {
         // Arrange
@@ -271,7 +312,9 @@ class AppointmentServiceTest {
         assertTrue(actualAllAppointments.isEmpty());
     }
 
-
+    /**
+     * Method under test: {@link AppointmentService#getAllAppointments()}
+     */
     @Test
     void testGetAllAppointments2() {
         // Arrange
@@ -303,8 +346,8 @@ class AppointmentServiceTest {
         user2.setUserName("janedoe");
 
         Medication medication = new Medication();
-        medication.setMId(1);
-        medication.setMPrescription(new ArrayList<>());
+        medication.setMid(1);
+        medication.setMprescription(new ArrayList<>());
         medication.setUser(user2);
 
         User user3 = new User();
@@ -328,19 +371,88 @@ class AppointmentServiceTest {
         appointmentList.add(appointment2);
         when(appointmentRepository.findAll()).thenReturn(appointmentList);
 
+        Appointment appointment3 = new Appointment();
+        appointment3.setAdate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        appointment3.setAid(1);
+        appointment3.setUser(new User());
+
+        Medication medication2 = new Medication();
+        medication2.setMid(1);
+        medication2.setMprescription(new ArrayList<>());
+        medication2.setUser(new User());
+
+        User user4 = new User();
+        user4.setAppointment(appointment3);
+        user4.setEmail("jane.doe@example.org");
+        user4.setMedicalHistory("Medical History");
+        user4.setMedication(medication2);
+        user4.setPassword("password");
+        user4.setPhone("6625550144");
+        user4.setRole(Role.USER);
+        user4.setUserId(1);
+        user4.setUserName("janedoe");
+
+        Appointment appointment4 = new Appointment();
+        appointment4.setAdate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        appointment4.setAid(1);
+        appointment4.setUser(user4);
+
+        Appointment appointment5 = new Appointment();
+        appointment5.setAdate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        appointment5.setAid(1);
+        appointment5.setUser(new User());
+
+        Medication medication3 = new Medication();
+        medication3.setMid(1);
+        medication3.setMprescription(new ArrayList<>());
+        medication3.setUser(new User());
+
+        User user5 = new User();
+        user5.setAppointment(appointment5);
+        user5.setEmail("jane.doe@example.org");
+        user5.setMedicalHistory("Medical History");
+        user5.setMedication(medication3);
+        user5.setPassword("password");
+        user5.setPhone("6625550144");
+        user5.setRole(Role.USER);
+        user5.setUserId(1);
+        user5.setUserName("janedoe");
+
+        Medication medication4 = new Medication();
+        medication4.setMid(1);
+        medication4.setMprescription(new ArrayList<>());
+        medication4.setUser(user5);
+
+        User user6 = new User();
+        user6.setAppointment(appointment4);
+        user6.setEmail("jane.doe@example.org");
+        user6.setMedicalHistory("Medical History");
+        user6.setMedication(medication4);
+        user6.setPassword("password");
+        user6.setPhone("6625550144");
+        user6.setRole(Role.USER);
+        user6.setUserId(1);
+        user6.setUserName("janedoe");
+        Optional<User> ofResult = Optional.of(user6);
+        when(userRepository.findByUserId(anyInt())).thenReturn(ofResult);
+
         // Act
         List<DoctorAppointmentResponse> actualAllAppointments = appointmentService.getAllAppointments();
 
         // Assert
+        verify(userRepository).findByUserId(eq(1));
         verify(appointmentRepository).findAll();
         assertEquals(1, actualAllAppointments.size());
         DoctorAppointmentResponse getResult = actualAllAppointments.get(0);
+        assertEquals("janedoe", getResult.getUserName());
         assertEquals(1, getResult.getAid());
         assertEquals(1, getResult.getUserId());
         assertSame(adate, getResult.getAdate());
     }
 
-
+    /**
+     * Method under test: {@link AppointmentService#getAppointmentById(int)}
+     */
     @Test
     void testGetAppointmentById() {
         // Arrange
@@ -372,8 +484,8 @@ class AppointmentServiceTest {
         user2.setUserName("janedoe");
 
         Medication medication = new Medication();
-        medication.setMId(1);
-        medication.setMPrescription(new ArrayList<>());
+        medication.setMid(1);
+        medication.setMprescription(new ArrayList<>());
         medication.setUser(user2);
 
         User user3 = new User();
